@@ -38,7 +38,10 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build do projeto
-        run: ./gradlew build -x test
+        run: ./gradlew build -x test -x checkstyleMain
+
+      - name: Análise estática (Checkstyle)
+        run: ./gradlew checkstyleMain
 
       - name: Executar testes unitários
         run: ./gradlew test
@@ -62,3 +65,10 @@ jobs:
         with:
           name: jacoco-report
           path: build/reports/jacoco/test/html/
+
+      - name: Upload relatório Checkstyle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkstyle-report
+          path: build/reports/checkstyle/

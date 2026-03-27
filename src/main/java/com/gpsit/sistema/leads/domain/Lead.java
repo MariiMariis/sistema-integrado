@@ -100,10 +100,12 @@ public class Lead {
 
     @Override
     public boolean equals(Object outro) {
-        if (this == outro)
+        if (this == outro) {
             return true;
-        if (!(outro instanceof Lead lead))
+        }
+        if (!(outro instanceof Lead lead)) {
             return false;
+        }
         return id != null && Objects.equals(id, lead.id);
     }
 

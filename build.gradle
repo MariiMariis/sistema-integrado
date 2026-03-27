@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '3.4.3'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'jacoco'
+    id 'checkstyle'
 }
 
 group = 'com.gpsit'
@@ -11,6 +12,16 @@ description = 'Sistema Integrado - Controle de Estoque e Gestão de Leads'
 
 java {
     sourceCompatibility = '17'
+}
+
+checkstyle {
+    toolVersion = '10.21.4'
+    configFile = file("config/checkstyle/checkstyle.xml")
+    maxWarnings = 0
+}
+
+checkstyleTest {
+    enabled = false
 }
 
 repositories {

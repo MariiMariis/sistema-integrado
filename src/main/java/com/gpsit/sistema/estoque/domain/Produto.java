@@ -193,10 +193,12 @@ public class Produto {
 
     @Override
     public boolean equals(Object outro) {
-        if (this == outro)
+        if (this == outro) {
             return true;
-        if (!(outro instanceof Produto produto))
+        }
+        if (!(outro instanceof Produto produto)) {
             return false;
+        }
         return id != null && Objects.equals(id, produto.id);
     }
 
