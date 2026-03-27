@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Lead | Sistema Integrado</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}"/>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a th:href="@{/dashboard}">📊 Sistema Integrado</a>
+        </div>
+        <div class="navbar-links">
+            <a th:href="@{/dashboard}">Dashboard</a>
+            <a th:href="@{/produtos}">📦 Estoque</a>
+            <a th:href="@{/leads}" class="active">👤 Leads</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <h1 th:text="${lead.id != null ? 'Editar Lead' : 'Novo Lead'}">Formulário de Lead</h1>
+
+        <div th:if="${mensagemErro}" class="alert alert-error" th:text="${mensagemErro}"></div>
+
+        <form th:action="@{/leads/salvar}" th:object="${lead}" method="post" class="form">
+            <input type="hidden" th:field="*{id}"/>
+
+            <div class="form-group">
+                <label for="nome">Nome *</label>
+                <input type="text" id="nome" th:field="*{nome}" class="form-control"
+                       placeholder="Nome completo do lead"/>
+                <span class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">E-mail *</label>
+                    <input type="email" id="email" th:field="*{email}" class="form-control"
+                           placeholder="email@exemplo.com"/>
+                    <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefone">Telefone *</label>
+                    <input type="text" id="telefone" th:field="*{telefone}" class="form-control"
+                           placeholder="(11) 99999-9999"/>
+                    <span class="error" th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status *</label>
+                <select id="status" th:field="*{status}" class="form-control">
+                    <option value="">Selecione...</option>
+                    <option th:each="s : ${statusValues}" th:value="${s}" th:text="${s.descricao}"></option>
+                </select>
+                <span class="error" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="observacoes">Observações</label>
+                <textarea id="observacoes" th:field="*{observacoes}" class="form-control" rows="3"
+                          placeholder="Observações opcionais sobre o lead"></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a th:href="@{/leads}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </main>
+
+    <footer class="footer">
+        <p>Sistema Integrado &copy; 2026 — GPS IT</p>
+    </footer>
+</body>
+</html>

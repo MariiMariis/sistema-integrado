@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Erro | Sistema Integrado</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}"/>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a th:href="@{/dashboard}">📊 Sistema Integrado</a>
+        </div>
+        <div class="navbar-links">
+            <a th:href="@{/dashboard}">Dashboard</a>
+            <a th:href="@{/produtos}">📦 Estoque</a>
+            <a th:href="@{/leads}">👤 Leads</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="error-page">
+            <h1 th:text="${status} ?: '500'">500</h1>
+            <h2 th:text="${erro} ?: 'Erro'">Erro</h2>
+            <p th:text="${mensagem} ?: 'Ocorreu um erro inesperado.'">Mensagem de erro</p>
+            <p class="error-path" th:if="${caminho}">Caminho: <span th:text="${caminho}"></span></p>
+            <p class="error-timestamp" th:if="${timestamp}" th:text="${#dates.format(timestamp, 'dd/MM/yyyy HH:mm:ss')}"></p>
+            <a th:href="@{/dashboard}" class="btn btn-primary">Voltar ao Dashboard</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>Sistema Integrado &copy; 2026 — GPS IT</p>
+    </footer>
+</body>
+</html>

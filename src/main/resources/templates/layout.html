@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${tituloPagina != null ? tituloPagina + ' | Sistema Integrado' : 'Sistema Integrado'}">Sistema Integrado</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}"/>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a th:href="@{/dashboard}">📊 Sistema Integrado</a>
+        </div>
+        <div class="navbar-links">
+            <a th:href="@{/dashboard}" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/dashboard')} ? 'active' : ''">Dashboard</a>
+            <a th:href="@{/produtos}" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/produtos')} ? 'active' : ''">📦 Estoque</a>
+            <a th:href="@{/leads}" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/leads')} ? 'active' : ''">👤 Leads</a>
+        </div>
+    </nav>
+
+    <div th:if="${mensagemSucesso}" class="alert alert-success" th:text="${mensagemSucesso}"></div>
+    <div th:if="${mensagemErro}" class="alert alert-error" th:text="${mensagemErro}"></div>
+
+    <main class="container">
+        <div th:replace="~{${viewContent} :: content}">Conteúdo</div>
+    </main>
+
+    <footer class="footer">
+        <p>Sistema Integrado &copy; 2026 — GPS IT | Controle de Estoque &amp; Gestão de Leads</p>
+    </footer>
+</body>
+</html>

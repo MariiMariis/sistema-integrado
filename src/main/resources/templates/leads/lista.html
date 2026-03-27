@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Leads | Sistema Integrado</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}"/>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a th:href="@{/dashboard}">📊 Sistema Integrado</a>
+        </div>
+        <div class="navbar-links">
+            <a th:href="@{/dashboard}">Dashboard</a>
+            <a th:href="@{/produtos}">📦 Estoque</a>
+            <a th:href="@{/leads}" class="active">👤 Leads</a>
+        </div>
+    </nav>
+
+    <div th:if="${mensagemSucesso}" class="alert alert-success container" th:text="${mensagemSucesso}"></div>
+    <div th:if="${mensagemErro}" class="alert alert-error container" th:text="${mensagemErro}"></div>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>👤 Gestão de Leads</h1>
+            <a th:href="@{/leads/novo}" class="btn btn-success">+ Novo Lead</a>
+        </div>
+
+        <div th:if="${#lists.isEmpty(leads)}" class="empty-state">
+            <p>Nenhum lead cadastrado.</p>
+        </div>
+
+        <table th:unless="${#lists.isEmpty(leads)}" class="data-table" id="tabelaLeads">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Telefone</th>
+                    <th>Status</th>
+                    <th>Observações</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="lead : ${leads}">
+                    <td th:text="${lead.nome}"></td>
+                    <td th:text="${lead.email}"></td>
+                    <td th:text="${lead.telefone}"></td>
+                    <td>
+                        <span class="badge"
+                              th:classappend="${lead.status.name() == 'CONVERTIDO'} ? 'badge-success' :
+                                              (${lead.status.name() == 'PERDIDO'} ? 'badge-danger' :
+                                              (${lead.status.name() == 'NOVO'} ? 'badge-info' : 'badge-default'))"
+                              th:text="${lead.status.descricao}">Status</span>
+                    </td>
+                    <td th:text="${lead.observacoes != null ? lead.observacoes : '-'}"></td>
+                    <td class="actions">
+                        <a th:href="@{/leads/{id}/editar(id=${lead.id})}" class="btn btn-small btn-primary">Editar</a>
+                        <a th:href="@{/leads/{id}/excluir(id=${lead.id})}" class="btn btn-small btn-danger"
+                           onclick="return confirm('Tem certeza que deseja excluir este lead?')">Excluir</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <footer class="footer">
+        <p>Sistema Integrado &copy; 2026 — GPS IT</p>
+    </footer>
+</body>
+</html>

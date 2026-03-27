@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${tituloPagina} + ' | Sistema Integrado'">Movimentação | Sistema Integrado</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}"/>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a th:href="@{/dashboard}">📊 Sistema Integrado</a>
+        </div>
+        <div class="navbar-links">
+            <a th:href="@{/dashboard}">Dashboard</a>
+            <a th:href="@{/produtos}" class="active">📦 Estoque</a>
+            <a th:href="@{/leads}">👤 Leads</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <h1 th:text="${tituloPagina}">Movimentação de Estoque</h1>
+
+        <div class="card" th:if="${produto}">
+            <h3 th:text="${produto.nome}">Produto</h3>
+            <p>Estoque atual: <strong th:text="${produto.quantidade + ' ' + produto.unidade.simbolo}"></strong></p>
+        </div>
+
+        <form th:action="@{${acaoFormulario}}" th:object="${movimentacao}" method="post" class="form">
+            <div class="form-group">
+                <label for="quantidade">Quantidade *</label>
+                <input type="number" id="quantidade" th:field="*{quantidade}" class="form-control"
+                       min="1" placeholder="Informe a quantidade"/>
+                <span class="error" th:if="${#fields.hasErrors('quantidade')}" th:errors="*{quantidade}"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary"
+                        th:text="${tipoMovimentacao == 'entrada' ? 'Registrar Entrada' : 'Registrar Saída'}">
+                    Registrar
+                </button>
+                <a th:href="@{/produtos}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </main>
+
+    <footer class="footer">
+        <p>Sistema Integrado &copy; 2026 — GPS IT</p>
+    </footer>
+</body>
+</html>

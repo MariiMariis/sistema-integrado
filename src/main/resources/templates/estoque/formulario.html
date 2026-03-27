@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${tituloPagina} + ' | Sistema Integrado'">Produto | Sistema Integrado</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}"/>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a th:href="@{/dashboard}">📊 Sistema Integrado</a>
+        </div>
+        <div class="navbar-links">
+            <a th:href="@{/dashboard}">Dashboard</a>
+            <a th:href="@{/produtos}" class="active">📦 Estoque</a>
+            <a th:href="@{/leads}">👤 Leads</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <h1 th:text="${tituloPagina}">Formulário de Produto</h1>
+
+        <div th:if="${erroNegocio}" class="alert alert-error" th:text="${erroNegocio}"></div>
+
+        <form th:action="@{${acaoFormulario}}" th:object="${produto}" method="post" class="form">
+            <div class="form-group">
+                <label for="nome">Nome do Produto *</label>
+                <input type="text" id="nome" th:field="*{nome}" class="form-control"
+                       placeholder="Ex: Arroz Integral 5kg"/>
+                <span class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="codigoBarras">Código de Barras *</label>
+                <input type="text" id="codigoBarras" th:field="*{codigoBarras}" class="form-control"
+                       placeholder="Ex: 7891234567890"
+                       th:readonly="${produtoId != null}"/>
+                <span class="error" th:if="${#fields.hasErrors('codigoBarras')}" th:errors="*{codigoBarras}"></span>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="categoria">Categoria *</label>
+                    <select id="categoria" th:field="*{categoria}" class="form-control">
+                        <option value="">Selecione...</option>
+                        <option th:each="cat : ${categorias}" th:value="${cat}" th:text="${cat.descricao}"></option>
+                    </select>
+                    <span class="error" th:if="${#fields.hasErrors('categoria')}" th:errors="*{categoria}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="unidade">Unidade de Medida *</label>
+                    <select id="unidade" th:field="*{unidade}" class="form-control">
+                        <option value="">Selecione...</option>
+                        <option th:each="un : ${unidades}" th:value="${un}" th:text="${un.simbolo}"></option>
+                    </select>
+                    <span class="error" th:if="${#fields.hasErrors('unidade')}" th:errors="*{unidade}"></span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="preco">Preço (R$) *</label>
+                    <input type="number" id="preco" th:field="*{preco}" class="form-control"
+                           step="0.01" min="0" placeholder="0.00"/>
+                    <span class="error" th:if="${#fields.hasErrors('preco')}" th:errors="*{preco}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="quantidade">Quantidade Inicial</label>
+                    <input type="number" id="quantidade" th:field="*{quantidade}" class="form-control"
+                           min="0" placeholder="0"/>
+                    <span class="error" th:if="${#fields.hasErrors('quantidade')}" th:errors="*{quantidade}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="estoqueMinimo">Estoque Mínimo</label>
+                    <input type="number" id="estoqueMinimo" th:field="*{estoqueMinimo}" class="form-control"
+                           min="0" placeholder="0"/>
+                    <span class="error" th:if="${#fields.hasErrors('estoqueMinimo')}" th:errors="*{estoqueMinimo}"></span>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a th:href="@{/produtos}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </main>
+
+    <footer class="footer">
+        <p>Sistema Integrado &copy; 2026 — GPS IT</p>
+    </footer>
+</body>
+</html>

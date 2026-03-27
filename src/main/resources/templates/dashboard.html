@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dashboard | Sistema Integrado</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}"/>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a th:href="@{/dashboard}">📊 Sistema Integrado</a>
+        </div>
+        <div class="navbar-links">
+            <a th:href="@{/dashboard}" class="active">Dashboard</a>
+            <a th:href="@{/produtos}">📦 Estoque</a>
+            <a th:href="@{/leads}">👤 Leads</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <h1>Dashboard</h1>
+        <p class="subtitle">Visão consolidada dos módulos de Estoque e Leads</p>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <h2>📦 Estoque</h2>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-number" th:text="${totalProdutos}">0</span>
+                        <span class="stat-label">Produtos Cadastrados</span>
+                    </div>
+                    <div class="stat-item warning" th:if="${produtosEstoqueBaixo > 0}">
+                        <span class="stat-number" th:text="${produtosEstoqueBaixo}">0</span>
+                        <span class="stat-label">Estoque Baixo ⚠️</span>
+                    </div>
+                </div>
+                <a th:href="@{/produtos}" class="btn btn-primary">Ver Produtos</a>
+                <a th:href="@{/produtos/novo}" class="btn btn-success">Novo Produto</a>
+            </div>
+
+            <div class="card">
+                <h2>👤 Leads</h2>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-number" th:text="${totalLeads}">0</span>
+                        <span class="stat-label">Total de Leads</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" th:text="${leadsNovos}">0</span>
+                        <span class="stat-label">Leads Novos</span>
+                    </div>
+                    <div class="stat-item success">
+                        <span class="stat-number" th:text="${leadsConvertidos}">0</span>
+                        <span class="stat-label">Convertidos ✅</span>
+                    </div>
+                </div>
+                <a th:href="@{/leads}" class="btn btn-primary">Ver Leads</a>
+                <a th:href="@{/leads/novo}" class="btn btn-success">Novo Lead</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>Sistema Integrado &copy; 2026 — GPS IT | Controle de Estoque &amp; Gestão de Leads</p>
+    </footer>
+</body>
+</html>

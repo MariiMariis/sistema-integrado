@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Estoque | Sistema Integrado</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}"/>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a th:href="@{/dashboard}">📊 Sistema Integrado</a>
+        </div>
+        <div class="navbar-links">
+            <a th:href="@{/dashboard}">Dashboard</a>
+            <a th:href="@{/produtos}" class="active">📦 Estoque</a>
+            <a th:href="@{/leads}">👤 Leads</a>
+        </div>
+    </nav>
+
+    <div th:if="${mensagemSucesso}" class="alert alert-success container" th:text="${mensagemSucesso}"></div>
+    <div th:if="${mensagemErro}" class="alert alert-error container" th:text="${mensagemErro}"></div>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>📦 Controle de Estoque</h1>
+            <a th:href="@{/produtos/novo}" class="btn btn-success">+ Novo Produto</a>
+        </div>
+
+        <div class="filters">
+            <form th:action="@{/produtos}" method="get" class="filter-form">
+                <select name="categoria" id="filtroCategoria">
+                    <option value="">Todas as Categorias</option>
+                    <option th:each="cat : ${categorias}"
+                            th:value="${cat.name()}"
+                            th:text="${cat.descricao}"
+                            th:selected="${cat.name() == categoriaSelecionada}">
+                    </option>
+                </select>
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+            </form>
+            <a th:href="@{/produtos(estoqueBaixo=true)}" class="btn btn-warning">⚠️ Estoque Baixo</a>
+            <a th:href="@{/produtos}" class="btn btn-secondary" th:if="${filtroAtivo}">Limpar Filtro</a>
+        </div>
+
+        <p th:if="${filtroAtivo}" class="filter-info">Filtro ativo: <strong th:text="${filtroAtivo}"></strong></p>
+
+        <div th:if="${#lists.isEmpty(produtos)}" class="empty-state">
+            <p>Nenhum produto encontrado.</p>
+        </div>
+
+        <table th:unless="${#lists.isEmpty(produtos)}" class="data-table" id="tabelaProdutos">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Código de Barras</th>
+                    <th>Categoria</th>
+                    <th>Preço</th>
+                    <th>Quantidade</th>
+                    <th>Est. Mínimo</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="produto : ${produtos}"
+                    th:classappend="${produto.estaBaixoDoEstoqueMinimo()} ? 'row-warning' : ''">
+                    <td th:text="${produto.nome}"></td>
+                    <td th:text="${produto.codigoBarras}"></td>
+                    <td th:text="${produto.categoria.descricao}"></td>
+                    <td th:text="${'R$ ' + #numbers.formatDecimal(produto.preco, 1, 2)}"></td>
+                    <td th:text="${produto.quantidade + ' ' + produto.unidade.simbolo}"></td>
+                    <td th:text="${produto.estoqueMinimo}"></td>
+                    <td>
+                        <span th:if="${produto.estaBaixoDoEstoqueMinimo()}" class="badge badge-warning">⚠️ Baixo</span>
+                        <span th:unless="${produto.estaBaixoDoEstoqueMinimo()}" class="badge badge-success">✅ OK</span>
+                    </td>
+                    <td class="actions">
+                        <a th:href="@{/produtos/{id}/editar(id=${produto.id})}" class="btn btn-small btn-primary">Editar</a>
+                        <a th:href="@{/produtos/{id}/entrada(id=${produto.id})}" class="btn btn-small btn-success">+Entrada</a>
+                        <a th:href="@{/produtos/{id}/saida(id=${produto.id})}" class="btn btn-small btn-warning">-Saída</a>
+                        <form th:action="@{/produtos/{id}/remover(id=${produto.id})}" method="post" style="display:inline"
+                              onsubmit="return confirm('Tem certeza que deseja remover este produto?')">
+                            <button type="submit" class="btn btn-small btn-danger">Remover</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <footer class="footer">
+        <p>Sistema Integrado &copy; 2026 — GPS IT</p>
+    </footer>
+</body>
+</html>
