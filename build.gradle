@@ -73,6 +73,10 @@ tasks.register('seleniumTest', Test) {
     include '**/selenium/**'
     description = 'Executa testes Selenium pós-deploy (E2E)'
     group = 'verification'
+    reports {
+        html.outputLocation = layout.buildDirectory.dir('reports/tests/seleniumTest')
+        junitXml.outputLocation = layout.buildDirectory.dir('test-results/seleniumTest')
+    }
 }
 
 jacocoTestReport {
