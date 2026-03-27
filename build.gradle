@@ -4,6 +4,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
     id 'jacoco'
     id 'checkstyle'
+    id 'com.github.spotbugs' version '6.0.9'
 }
 
 group = 'com.gpsit'
@@ -24,6 +25,23 @@ checkstyleTest {
     enabled = false
 }
 
+spotbugs {
+    ignoreFailures = true
+    effort = 'max'
+    reportLevel = 'medium'
+}
+
+spotbugsTest {
+    enabled = false
+}
+
+tasks.withType(com.github.spotbugs.snom.SpotBugsTask).configureEach {
+    reports {
+        html.required = true
+        xml.required = true
+    }
+}
+
 repositories {
     mavenCentral()
 }
@@ -32,6 +50,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'com.h2database:h2'
@@ -39,12 +58,21 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'net.jqwik:jqwik:1.8.4'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.18.1'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
     exclude '**/selenium/**'
     finalizedBy jacocoTestReport
+}
+
+tasks.register('seleniumTest', Test) {
+    useJUnitPlatform()
+    include '**/selenium/**'
+    description = 'Executa testes Selenium pós-deploy (E2E)'
+    group = 'verification'
 }
 
 jacocoTestReport {
@@ -62,7 +90,7 @@ jacocoTestCoverageVerification {
             limit {
                 counter = 'INSTRUCTION'
                 value = 'COVEREDRATIO'
-                minimum = 0.85
+                minimum = 0.90
             }
         }
     }

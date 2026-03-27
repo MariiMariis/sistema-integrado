@@ -1,6 +1,7 @@
 package com.gpsit.sistema.config;
 
 import com.gpsit.sistema.estoque.service.EstoqueService;
+import com.gpsit.sistema.leads.domain.StatusLead;
 import com.gpsit.sistema.leads.service.LeadService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,10 +32,11 @@ public class DashboardController {
         model.addAttribute("produtosEstoqueBaixo", estoqueService.buscarComEstoqueBaixo().size());
         model.addAttribute("totalLeads", leads.size());
         model.addAttribute("leadsNovos", leads.stream()
-                .filter(l -> l.getStatus().name().equals("NOVO")).count());
+                .filter(l -> l.getStatus() == StatusLead.NOVO).count());
         model.addAttribute("leadsConvertidos", leads.stream()
-                .filter(l -> l.getStatus().name().equals("CONVERTIDO")).count());
+                .filter(l -> l.getStatus() == StatusLead.CONVERTIDO).count());
 
         return "dashboard";
     }
 }
+

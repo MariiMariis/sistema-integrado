@@ -50,6 +50,36 @@ public class Lead {
         this.observacoes = observacoes;
     }
 
+    public Lead comNome(String novoNome) {
+        Lead copia = new Lead(novoNome, this.email, this.telefone, this.status, this.observacoes);
+        copia.id = this.id;
+        return copia;
+    }
+
+    public Lead comEmail(String novoEmail) {
+        Lead copia = new Lead(this.nome, novoEmail, this.telefone, this.status, this.observacoes);
+        copia.id = this.id;
+        return copia;
+    }
+
+    public Lead comTelefone(String novoTelefone) {
+        Lead copia = new Lead(this.nome, this.email, novoTelefone, this.status, this.observacoes);
+        copia.id = this.id;
+        return copia;
+    }
+
+    public Lead comStatus(StatusLead novoStatus) {
+        Lead copia = new Lead(this.nome, this.email, this.telefone, novoStatus, this.observacoes);
+        copia.id = this.id;
+        return copia;
+    }
+
+    public Lead comObservacoes(String novasObservacoes) {
+        Lead copia = new Lead(this.nome, this.email, this.telefone, this.status, novasObservacoes);
+        copia.id = this.id;
+        return copia;
+    }
+
     public Long getId() {
         return id;
     }
